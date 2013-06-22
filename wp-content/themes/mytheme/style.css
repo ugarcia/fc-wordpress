@@ -1,0 +1,119 @@
+/*
+Theme Name: MyTheme
+Theme URI: mytheme
+Description: mantra child theme
+Author: FrontCoder
+Author URI: frontcoder.com
+Template: mantra
+Version: 1
+.
+First wordpress inheritance attempt.
+.
+*/
+
+/* Parent styles */
+@import url(../mantra/style.css);
+
+
+/* From wp theme configuration auto-generation */
+#content {
+    width: 790px;
+}
+
+#primary, #secondary {
+    width: 250px;
+}
+
+
+#content iframe {
+    background-color: #FCFCD0;
+}
+
+/* Custom header title styles */
+.headerTitle {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.headerTitle h1 {
+    color: #794E4E;
+    margin-right: 1em;
+    font-family: Comic Sans MS;
+    font-size: 26pt;
+    font-weight: bolder;
+    margin-top: .5em;
+    text-shadow: 2px 2px 0 #DFDFDF, -2px -2px 0 #696969, 3px 3px 1px #000000;
+}
+
+#header-container #logo img {
+    width: 32px;
+    height: 32px;
+}
+
+@media screen and (max-width: 480px) {
+
+    .desktop-only {
+        display: none;
+    }
+}
+
+
+/* Login with ajax links list styles */
+.lwa-info {
+    text-transform: none;
+}
+
+
+/* Frontier Post Plugin style fixes */
+#content .frontier_post_form td {
+    padding: 0;
+}
+
+#content .frontier_post_form #wp-user_post_desc-editor-container,
+#content .frontier_post_form  table,
+#content .frontier_post_form  tr,
+#content .frontier_post_form  td,
+#content .frontier_post_form  td,
+td.frontier_border {
+    border: 0 !important;
+    border-image: none;
+}
+
+#content .frontier_post_form table td {
+    background-color: #FCFCD0;
+}
+
+#content #user_post_desc_tbl td iframe,
+#content #user_post_desc_toolbargroup td {
+    background-color: #FCFCFC;
+}
+
+#content #user_post_title {
+    vertical-align: baseline !important;
+}
+
+
+/* Next gen Gallery style fixes */
+.ngg-widget-slideshow,
+#content .ngg-widget-slideshow img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.widget_slideshow .widget-title {
+    display: none;
+}
+
+/* Game list styles */
+#content .gameLink {
+    display: inline-block;
+    text-align: center;
+    margin: 3em;
+}
+
+#content .gameLink img {
+    width: 8em;
+    height: 8em;
+}
