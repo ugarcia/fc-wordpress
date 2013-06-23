@@ -117,3 +117,12 @@ td.frontier_border {
     width: 8em;
     height: 8em;
 }
+
+#content .youtubeResults>li {
+    background-image: none;
+    display: inline;
+    padding-left: 0;
+}
+#content .youtubeResults>li object {
+    margin: 1em;
+}

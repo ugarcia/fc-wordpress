@@ -16,7 +16,7 @@ Template Name: GameIndex
                     ?>
                         <div class='gameLink'>
                             <a href='<?php echo get_permalink($pageid).$name; ?>'>
-                               <img src='<?php echo "/games/${name}/logo.png"; ?>'/><br/>
+                               <img src='<?php echo "/games/${title}/logo.png"; ?>'/><br/>
                                <b><?php echo $title; ?></b>
                             </a>
                         </div>

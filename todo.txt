@@ -1,0 +1,29 @@
+Installed plugins:
+------------------
+
+v1.0 (22/06/2013): **server version
+
+=> Frontier Post (Post from Frontend)
+=> Login With Ajax (Async Login widgwet)
+=> NextGEN Gallery (Picture Galleries / Albums / Sliders ...)
+=> Rewrite (Manage rewrite rules easily)
+=> Theme My Login (Register frontend form)
+=> User Avatar (User avatar picture management support)
+=> WP SMTP (Properly configures SMTP options for messaging)
+
+v1.01 (23/06/2013):
+
+=> Leaflet Maps Marker (allows posting map markers)
+=> Slim Jet Pack (enabled social 'like' icons and other basic stuff)
+=> Contact Form 7 (Adds contact form edition for frontend)
+=> Slingpic (allows sharing pictures to social networks)
+=> All In One SEO Pack (Default web search optimization ..)
+=> Google XML Sitemaps (Generates helpful XML map for search engines)
+=> Members (For role management, required in order to contributors insert media on posts)
+=> Related Youtube Videos (For querying and displaying them from youtube)
+
+
+TODO:
+-----
+
+23/06/2013 => Leaflet plugin - Make 'insert marker' link appear in frontend posts edition

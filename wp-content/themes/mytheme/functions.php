@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-    // Custom theme hook
+    // Custom theme hook for displaying additional Title
     function mytheme_cryout_branding_hook() {
         ?>
             <div class='headerTitle desktop-only'>
@@ -26,7 +26,8 @@
     } // END: remove_admin_bar
     add_action('after_setup_theme', 'remove_admin_bar');
 
-    //Remove Media Library Tab
+
+    //Remove Media Library Tab (if not admin)
     add_action('pre_get_posts','ml_restrict_media_library');
     function ml_restrict_media_library( $wp_query_obj ) {
 
@@ -43,4 +44,5 @@
 
         return;
     }
+
 ?>
