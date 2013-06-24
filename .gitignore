@@ -5,6 +5,8 @@ resources
 .idea
 *.iml
 *.log
+*.zip
+*.sql
 wp-config.php
 wp-content/uploads/
 wp-content/blogs.dir/
