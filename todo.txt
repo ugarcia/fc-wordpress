@@ -1,7 +1,7 @@
 Installed plugins:
 ------------------
 
-v1.0 (22/06/2013): **server version
+v1.0 (22/06/2013):
 
 => Frontier Post (Post from Frontend)
 => Login With Ajax (Async Login widgwet)
@@ -11,7 +11,7 @@ v1.0 (22/06/2013): **server version
 => User Avatar (User avatar picture management support)
 => WP SMTP (Properly configures SMTP options for messaging)
 
-v1.01 (23/06/2013):
+v1.01 (23/06/2013): **server version
 
 => Leaflet Maps Marker (allows posting map markers)
 => Slim Jet Pack (enabled social 'like' icons and other basic stuff)
@@ -23,7 +23,9 @@ v1.01 (23/06/2013):
 => Related Youtube Videos (For querying and displaying them from youtube)
 
 
+
 TODO:
 -----
 
 23/06/2013 => Leaflet plugin - Make 'insert marker' link appear in frontend posts edition
+23/06/2013 => Related Youtube Videos - Not working in server - ???
