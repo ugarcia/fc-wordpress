@@ -37,24 +37,22 @@ if (isSet($_FILES['dbfile'])) {
     $parsed = preg_replace_callback(
         '/s:(\d+):([^;]*)http:\/\/'.$old_host.'/',
         function($matches) {
-            $size = intval($matches[1]) + 5;
-            $entry = 's:'.$size.':'.$matches[2].$GLOBALS['new_host_url'];
+            $size = intval($matches[1]) + strlen($GLOBALS['new_host']) - strlen($GLOBALS['old_host']);
+             $entry = 's:'.$size.':'.$matches[2].$GLOBALS['new_host_url'];
             return $entry;
         },
         $sql
     );
-    $parsed2 = preg_replace_callback(
-        '/http:\/\/'.$GLOBALS['old_host'].'/',
-        function($matches) {
-            return $GLOBALS['new_host_url'];
-        },
-        $parsed
-    );
+    $parsed2 = preg_replace('/http%3A%2F%2F'.$old_host.'/', 'http%3A%2F%2F'.$new_host, $parsed);
+    $parsed3 = preg_replace('/http:\/\/'.$old_host.'/', $new_host_url, $parsed2);
     $parsedName = 'parsed_'.$srcFilename;
-    file_put_contents($parsedName, $parsed2);
+    $bs_pos = strrpos($filename, "\\");
+    $rs_pos = strrpos($filename, "/");
+    $parsedPath = substr($filename, 0, max($bs_pos, $rs_pos)+1);
+    file_put_contents($parsedPath.$parsedName, $parsed3);
     ob_end_clean();
     header('Content-type: application/text');
     header('Content-Disposition: attachment; filename="'.$parsedName.'"');
-    readfile($parsedName);
+    readfile($parsedPath.$parsedName);
 }
 ?>

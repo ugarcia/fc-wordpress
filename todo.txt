@@ -23,9 +23,17 @@ v1.01 (23/06/2013): **server version
 => Related Youtube Videos (For querying and displaying them from youtube)
 
 
+FIXES:
+------
+
+25/06/2013 => Related Youtube Videos - simplexml does not parse files from server
+              Changed plugin source (API.php): File now loads thru curl, parsing to simplexml the string
+
+25/06/2013 => Leaflet plugin - To make 'insert marker' link appear in frontend posts editor was needed to
+              change the plugin code (lmm_tinymce_shortcode.php): Bypassed Javascript condition
 
 TODO:
 -----
 
-23/06/2013 => Leaflet plugin - Make 'insert marker' link appear in frontend posts edition
-23/06/2013 => Related Youtube Videos - Not working in server - ???
+25/06/2013 => Leaflet plugin - Ok, now we've the link but the new tab page is still in backend
+25/06/2013 => Private pages, can't make it work with wp options

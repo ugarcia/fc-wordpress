@@ -27,15 +27,21 @@ class RelatedYouTubeVideos_API {
     $searchTerms  = urlencode( $searchTerms );
   
     $orderBy      = urlencode( $orderBy );
-    
+
     $start        = (int) $start +1;
     
     $max          = (int) $max;
   
     $target       = 'http://gdata.youtube.com/feeds/api/videos?q=' . $searchTerms . '&orderby=' . $orderBy . '&start-index=' . $start . '&max-results=' . $max . '&v=2';
 
+      // CHANGE::simplexml_load_file() does not work ....
+    $ch = curl_init($target);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $data = curl_exec($ch);
+    $xml = simplexml_load_string($data);
+
     // @todo (future feature) $target caching with the filename containing the blog ID for MultiSite use!
-    $xml          = simplexml_load_file( $target );
+    // $xml          = simplexml_load_file( $target );
 
     if( !is_object( $xml ) ) {
     

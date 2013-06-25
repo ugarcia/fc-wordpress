@@ -15,7 +15,7 @@ if ( isset($lmm_options['misc_tinymce_button']) && ($lmm_options['misc_tinymce_b
 	(function($) {
         $('#ed_insertMap, #globe, #modal-content').remove();
         var visual_active = true;
-        if($('#wp-content-wrap').is('.tmce-active')){
+        //if($('#wp-content-wrap').is('.tmce-active')){
 		tinymce.create('tinymce.plugins.mm_shortcode', {
 			init : function(ed, url) {
 				function open_map() {
@@ -43,7 +43,7 @@ if ( isset($lmm_options['misc_tinymce_button']) && ($lmm_options['misc_tinymce_b
 		tinymce.PluginManager.add('mm_shortcode', tinymce.plugins.mm_shortcode); 
 		$('#wp-content-media-buttons').append('<a title=\'" . esc_attr__('Insert map','lmm') . "\' id = globe href=#><img src=".$LEAFLET_PLUGIN_URL."inc/img/icon-tinymce.png></a>');
 	    $('#ed_toolbar').append('<input type=button value=\'" . esc_attr__('Insert map','lmm') . "\' id=ed_insertMap class=ed_button title=\'" . esc_attr__('Insert map','lmm') . "\' />');	
-		}})(jQuery);
+		/*}*/ })(jQuery);
 	"; 
 }
 ?>

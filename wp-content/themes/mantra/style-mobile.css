@@ -27,8 +27,9 @@
 	}
 	
 	#header-container > div {
-	margin-top:7px ;
-	height:100% ;
+	margin-top:7px;
+	margin-left:14px;
+	height:100%;
 	}
 	
 	
@@ -79,7 +80,7 @@
 	#front-columns > div {
 		width:45% ;
 	}
-	#content img, #content article.post img, #content article .wp-caption, article embed {
+	#content img, content article.post img, #content article .wp-caption, article embed {
 		max-width:90% !important;
 	}
 	#content {
