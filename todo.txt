@@ -37,3 +37,5 @@ TODO:
 
 25/06/2013 => Leaflet plugin - Ok, now we've the link but the new tab page is still in backend
 25/06/2013 => Private pages, can't make it work with wp options
+26/06/2013 => Play mp4 files thru flash as a fallback for hmtl5 video tag
+26/06/2013 => Develop generic slider for content scrolling (learn to register javascripts?)
