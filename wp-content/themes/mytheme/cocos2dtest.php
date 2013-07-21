@@ -25,7 +25,7 @@ Template Name: Cocos2dTest
 
             <h2>Test - 03</h2>  <hr>
             <h2>Handling keyboard/mouse/touch/accelerometer input events ...</h2>  <br>
-            <p>Only arrow keys & spacebar supported</p>   <br>
+            <p>Enable / disable input handlers using controlls at the top</p>   <br>
             <iframe src='/cocos2d-html5-test/cocos2d-html5-test03' style='width:100%; height:40em;'></iframe>   <br>
             <p>Looks ok handling inputs, next stop: Add obstacles/enemies ... and recode everything into CoffeeScript haha!! </p>   <br>
             <br>
