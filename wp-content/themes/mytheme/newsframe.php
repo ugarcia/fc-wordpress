@@ -13,16 +13,20 @@ Template Name: NewsFrame
                     <!-- Latest news video feed -->
                     <div class='latestNewsVideo'>
                         <?php
-                            $ch = curl_init("http://rss.cnn.com/services/podcasting/incaseyoumissed/rss.xml");
+                            $ch = curl_init("http://rss.cnn.com/services/podcasting/ac360/rss.xml");
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $data = curl_exec($ch);
                             $xml = simplexml_load_string($data);
                         ?>
-                        <video src="<?php  echo $xml->channel->item[0]->link ?>"
-                               preload='auto' controls autoplay loop>
+                        <video width="600" height="300" preload='auto' controls autoplay loop>
+                            <source src="<?php  echo $xml->channel->item[0]->link ?>" type="video/mp4"></source>
                             Format or video not supported on browser, download it from
                             <a href="<?php  echo $xml->channel->item[0]->link; ?>"> here </a>
                         </video>
+                        <p>
+                            If your browsers does not support MP4, view it
+                            <a href="<?php  echo $xml->channel->item[0]->link; ?>"> here </a>
+                        </p>
                     </div>
 
                     <!-- News feed -->
