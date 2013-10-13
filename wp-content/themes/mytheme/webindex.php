@@ -2,12 +2,12 @@
 Template Name: WebIndex
 */ ?>
 
-<?php get_header(); ?>
+<!--?php get_header(); ?>
 
     <div id="container">
         <div id="content" role="main">
 
-            <?php
+            <!--?php
                 $pageid = get_the_ID();
                 $webs = get_pages(array('child_of' => $pageid));
                 foreach ($webs as $key => $value) {
@@ -15,19 +15,21 @@ Template Name: WebIndex
                     $title = $value->post_title;
                     ?>
                         <div class='gameLink'>
-                            <a href='<?php echo get_permalink($pageid).$name; ?>'>
-                               <img src='<?php echo "/${title}/logo.png"; ?>'/><br/>
-                               <b><?php echo $title; ?></b>
+                            <a href='<!--?php echo /*get_permalink($pageid)*/'/'.$title/*$name*/; ?>'>
+                               <img src='<!--?php echo "/${title}/logo.png"; ?>'/><br/>
+                               <b><!--?php echo $title; ?></b>
                             </a>
                         </div>
-                    <?php
+                    <!--?php
                 }
             ?>
 
-        </div><!-- #content -->
+        </div>
 
-        <?php get_sidebar(); ?>
+        <!--?php get_sidebar(); ?>
 
-    </div><!-- #container -->
+    </div>
 
-<?php get_footer(); ?>
+<!--?php get_footer(); ?>
+
+<?php header("Location: /websites"); ?>

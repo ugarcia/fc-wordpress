@@ -26,7 +26,7 @@ First wordpress inheritance attempt.
 
 
 #content iframe {
-    background-color: #FCFCD0;
+    background-color: #d2f3f4;
 }
 
 /* Custom header title styles */
@@ -49,6 +49,42 @@ First wordpress inheritance attempt.
 #header-container #logo img {
     width: 32px;
     height: 32px;
+}
+
+#websites_link {
+    position: absolute;
+    left: 140px;
+    top: 10px;
+    padding: 10px;
+    background: linear-gradient(to right, #1e5799 0%, #7db9e8 50%, #1e5799 100%);
+    background-size: 200% 100%;
+    animation: bg_gradient_move_h 5s infinite linear;
+    -webkit-animation: bg_gradient_move_h 5s infinite linear;
+    box-shadow: 3px 3px 3px #000000;
+    border-radius: 10px;
+    z-index: 1001;
+}
+
+#websites_link:hover {
+    animation: bg_gradient_move_h 1s infinite linear;
+    -webkit-animation: bg_gradient_move_h 0.5s infinite linear;
+}
+
+#websites_link a {
+    display: block;
+    color: #BF3500;
+    font-family: Comic Sans MS;
+    font-size: 20pt;
+    text-shadow: 2px 2px 0 #dfdfdf, -2px -2px 0 #696969, 3px 3px 1px #000000;
+}
+
+@keyframes bg_gradient_move_h {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 0; }
+}
+@-webkit-keyframes bg_gradient_move_h {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 0; }
 }
 
 @media screen and (max-width: 480px) {
@@ -135,7 +171,7 @@ td.frontier_border {
 
 #content .newsEntry {
     border: 1px ridge #66aa66;
-    background-color: #ffffcc;
+    background-color: #cdeefb;
     border-radius: 10px;
     margin: 1em;
     width: 45%;
@@ -144,7 +180,7 @@ td.frontier_border {
 
 #content .newsEntry h2 {
     border: 1px ridge #66aa66;
-    background-color: #ffff98;
+    background-color: #97cef5;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 0 1em;
@@ -154,4 +190,8 @@ td.frontier_border {
 #content .newsEntry a {
     padding: 0 1em;
     margin-bottom: 0;
+}
+
+#content > ul.yoyo > ul.youtubeResults {
+    text-align: center;
 }

@@ -9,6 +9,12 @@ Template Name: Cocos2dTest
 
             <h1>Testing Cocos2d-html5</h1><hr><br>
 
+            <h3><a href="https://github.com/ugarcia/cocos2d-html5-test">
+                Check it in https://github.com/ugarcia/cocos2d-html5-test
+            </a></h3><hr><br>
+
+            <h2><b>*Note:</b> I'm busy working on BattleForGea so this development is delayed for the moment</h2> <hr>
+
             <h2>Test - 01</h2> <hr>
             <h2>Ok, first test with spritesheets/plist based animations</h2><br>
             <p>Only arrow keys supported</p><br>

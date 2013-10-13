@@ -10,6 +10,7 @@
     // Custom theme hook for displaying additional Title
     function mytheme_cryout_branding_hook() {
         ?>
+            <div id='websites_link'><a href="/websites">Web Sites</a></div>
             <div class='headerTitle desktop-only'>
                 <h1><?php bloginfo('name'); ?></h1>
             </div>
