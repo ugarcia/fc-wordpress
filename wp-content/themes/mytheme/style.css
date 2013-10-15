@@ -15,6 +15,16 @@ First wordpress inheritance attempt.
 @import url(../mantra/style.css);
 
 
+#access .menu li:hover {
+	background-color: #7DB9E8 ;
+}
+
+#access .menu li:hover  a{
+	color: #BF3500;
+	font-size: 15pt;
+}
+
+
 /* From wp theme configuration auto-generation */
 #content {
     width: 790px;
@@ -117,12 +127,15 @@ td.frontier_border {
 }
 
 #content .frontier_post_form table td {
-    background-color: #FCFCD0;
+    background-color: #d2f3f4;
 }
 
-#content #user_post_desc_tbl td iframe,
+#content #user_post_desc_tbl td iframe {
+    background-color: #fefefe;
+}
+
 #content #user_post_desc_toolbargroup td {
-    background-color: #FCFCFC;
+    background-color: #ECECEC;
 }
 
 #content #user_post_title {
@@ -155,12 +168,12 @@ td.frontier_border {
 }
 
 /* Youtube videos styles */
-#content .youtubeResults>li {
+#content .relatedYouTubeVideos >li {
     background-image: none;
     display: inline;
     padding-left: 0;
 }
-#content .youtubeResults>li object {
+#content .relatedYouTubeVideos >li object {
     margin: 1em;
 }
 
@@ -184,6 +197,7 @@ td.frontier_border {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 0 1em;
+	margin: 0;
 }
 
 #content .newsEntry p,
@@ -192,6 +206,6 @@ td.frontier_border {
     margin-bottom: 0;
 }
 
-#content > ul.yoyo > ul.youtubeResults {
+#content > ul.yoyo > ul.relatedYouTubeVideos  {
     text-align: center;
 }

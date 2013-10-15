@@ -46,15 +46,4 @@
         return;
     }
 
-// [cocos2dframe src="src-value"]
-function cocos2dframe_handler( $atts ) {
-    extract( shortcode_atts( array(
-        'src' => '/cocos2d-html5-test/cocos2d-html5-test01',
-    ), $atts ) );
-
-    return "<h1>WTF!!</h1>";
-    //return "<iframe src='${src}' style='width:100%; height:40em;'></iframe>";
-}
-add_shortcode( 'cocosframe', 'cocos2dframe_handler' );
-
 ?>

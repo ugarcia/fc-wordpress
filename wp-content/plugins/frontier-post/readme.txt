@@ -1,17 +1,17 @@
 === Frontier Post ===
 Contributors: finnj
 Donate link: 
-Tags: frontend, frontend post, frontend edit, frontier, frontier post, my post widget, posts, widget
+Tags: frontend, frontend post, frontend edit, frontier, post widget, posts, widget, Danish
 Requires at least: 3.4.0
 Tested up to: 3.6
-Stable tag: 1.4.9
+Stable tag: 1.6.2
 License: GPL v3 or later
  
-Fast, easy & secure Front End management of posts. Add, Edit, Delete posts from frontend - My Posts Widget
+Simple, Fast & Secure frontend management of posts - Add, Edit, Delete posts from frontend - My Posts Widget
   
 == Description ==
 
-WordPress Frontier Post Plugin enables adding, deleting and editing standard posts from frontend
+WordPress Frontier Post Plugin enables simple full featured management of standard posts from frontend for all user roles.
 
 Intention of the Frontier Post plugin is to enable front end posting and editing on your blog. Allowing your users to create content easy, with no need to go into the back-end.
 Editors and Administrators can use Frontier to edit posts from the frontend (Can be enabled/disabled in settings), and at the same time go to the backend for more advanced options.
@@ -19,22 +19,26 @@ Editors and Administrators can use Frontier to edit posts from the frontend (Can
 Frontier Post is intentionally made simple :)
 
 = Usage = 
-Add short-code [frontier-post] in a page content after install and activativation of the plugin
+Add short-code [frontier-post] in a page content after install and activation of the plugin
 
 = Main Features =
 * Create posts with media directly from frontend
-* Users can delete their own posts (Setting) 
-* Users can edit their own posts (Setting)
-* Post can be edited in frontend directly - standard edit link (Can be enabled/disabled in settings)
+* Users can delete their own posts (Optional) 
+* Users can edit their own posts (Optional)
+* Post can be edited in frontend directly - Using standard edit link (Optional)
 * My Posts Widget 
 * My Approvals Widget
 * Capabilities are aligned with Wordpress standard.
-* Excerpts editable (Can be enabled/disabled in settings)
+* Excerpts editable (Optional)
 * Edit Categories (dropdown or multiselect)
-* Tags (Can be enabled/disabled in settings)
+* Default category per role
+* Tags (Optional)
 * Supports Wordpress Post Status Transitions
 * 4 editor options for frontend editing (Full, Simple-Visual, Simple-Html or Text-Only)
+* Editor enhancements: Smiley (emoticons), Table control and Search & Replace 
+* Disable Admin bar per role (Optional)
 * Users must be logged in to post
+
 
 = My Posts Widget =
 * Show logged-in users posts (Author)
@@ -54,6 +58,8 @@ Add short-code [frontier-post] in a page content after install and activativatio
 * Danish
 * Russian (samaks)
 * Chinese (beezeeking)
+* Spanish (Hasmin)
+* Polish (Thomasz)
 
 Let me know what you think, and if you have enhancement requests or problems let me know through support area
 
@@ -72,6 +78,22 @@ Let me know what you think, and if you have enhancement requests or problems let
 * Only for standard posts, not custom post types
 * If limited administrator access is selected for a profile in Theme My Login, media uploads will fail for this profile.
 
+= Editor =
+* At the moment this functionality is Beta !
+* The following tinymce modules are loaded: emotions, searchreplace & table.
+* Standard wordpress button setup
+ * 1: bold, italic, strikethrough, bullist, numlist, blockquote, justifyleft, justifycenter, justifyright, link, unlink, wp_more, spellchecker, fullscreen, wp_adv
+ * 2: formatselect, underline, justifyfull, forecolor, pastetext, pasteword, removeformat, charmap, outdent, indent, undo, redo, wp_help
+ * 3: Empty
+ * 4: Empty
+* Suggested button setup (Default on Frontier Post install)
+ * 1: bold, italic, underline, strikethrough, bullist, numlist, blockquote, justifyleft, justifycenter, justifyright, link, unlink, wp_more, spellchecker, fullscreen, wp_adv
+ * 2: emotions, formatselect, justifyfull, forecolor, pastetext, pasteword, removeformat, charmap, outdent, indent, undo, redo, wp_help
+ * 3: search,replace,|,tablecontrols
+ * 4: Empty
+* Documentation:
+ * [tinymce ](http://www.tinymce.com/wiki.php/TinyMCE3x:Buttons/controls/)
+ * [Wordpress Codex](http://codex.wordpress.org/TinyMCE/)
 
 = Widgets =
 * Widgets are not cached as content is based on current logged in user. 
@@ -83,16 +105,16 @@ Let me know what you think, and if you have enhancement requests or problems let
 
 = Testing =
 * Frontier post is mainly tested with:
-* Wordpress 3.5.1
+* Wordpress 3.5.2
  * [Suffusion Theme](http://wordpress.org/extend/themes/suffusion/)
- * [Theme My Login](http://wordpress.org/extend/plugins/theme-my-login/)
+ * [Theme My Login](http://wordpress.org/extend/plugins/theme-my-login/) - Theme My Login is tested with version 6.2.3, version above this has challenges.
  * and sometimes with twenty twelve theme...
 * iPad & iPhone: Safari & Chrome - Windows 7: IE9, Firefox & Chrome
 
 = Translations =
 * Please post a link in support to translation files and I will include them in next release.
 
- = Clenup =
+ = Cleanup =
  * On deactivation: no cleanup.
  * On deletion options are deleted, and role capabilities are removed.
  * If you accidently delete the frontier-post plugin folder, you should:
@@ -108,6 +130,40 @@ Let me know what you think, and if you have enhancement requests or problems let
 4. Frontier My Posts Widget: Settings, My posts, Comments & comments excerpts (with different themes)
 
 == Changelog ==
+
+= Planned =
+* Simple email notifications to admin for posts pending approval, and to author when approved
+* Save button on Frontier edit form (so user can save post and stay on form)
+* Submit button: New setting to decide if user is taken to My Posts or to the actual post when a new post is submitted or edited. 
+
+= 1.6.2 =
+* Translation fixes (Thanks: Thomasz Bednarek)
+* Updated translations: Danish, Spanish, Polish & Russian)
+* Added suggested buttons for editor in settings page.
+* frontier_fix_list.php removed
+
+= 1.6.0 =
+* Temp version to be able correct the post_data issue (frontier_fix_list.php).
+
+= 1.5.9 =
+* Fixed issue where post_status was set to display value instead of value, meaning post was updated with translated value. Posts still in db, but does not show up in WP
+
+= 1.5.7 =
+* Bug: Post status changed to draft if post status was not selectable (as with a published post), hidden input field added to hold post_status
+* Preview link added to My Posts list for posts that are not published (Link to unpublished posts was removed in 1.5.1)
+
+= 1.5.6 =
+* New buttons on editor: Smileys, search & replace and table control
+* Frontend Author role added (Same capabilities as Author, makes it possible to distinguish between Author and Frontend Author) 
+* Bug in My Posts fixed (comments from post showing), wp_reset_postdata() added in end of frontier_list.php
+* Spanish Translation (hasmin)
+
+= 1.5.1 =
+* Option to hide admin bar
+* Default category per role
+* Only redirect edit to frontend for standard post type (not pages and custom post types)
+* Du not show dropdown for status with only 1 option, only show value
+* Added missing closing tags for ul and div in my approvals widget 
 
 = 1.4.9 =
 * Issue with svn, new tag created

@@ -111,37 +111,29 @@ jQuery(document).ready(function() {
 			min: 0,
 			max: 1980,
 			values: [ <?php echo $mantra_options['mantra_sidewidth'] ?>, <?php echo ($mantra_options['mantra_sidewidth']+$mantra_options['mantra_sidebar']); ?> ],
-			slide: function( event, ui ) {}
+			slide: function( event, ui ) {
+          		range=ui.values[ 1 ] - ui.values[ 0 ];
+          		if (ui.values[ 0 ]<500) {ui.values[ 0 ]=500; return false;};
+          		if(	range<220 || range>800 ){ ui.values[ 1 ] =  <?php echo $mantra_options['mantra_sidebar']+$mantra_options['mantra_sidewidth'];?>; return false;  };
+               	jQuery( "#mantra_sidewidth" ).val( ui.values[ 0 ] );
+          		jQuery( "#mantra_sidebar" ).val( ui.values[ 1 ] - ui.values[ 0 ] );
+          		jQuery( "#totalsize" ).html( ui.values[ 1 ]);
+          		jQuery( "#contentsize" ).html( ui.values[ 0 ]);jQuery( "#barsize" ).html( ui.values[ 1 ]-ui.values[ 0 ]);
+          		var percentage = parseInt( jQuery( "#slider-range .ui-slider-range" ).css('width') );
+          		var leftwidth = parseInt(jQuery( "#slider-range .ui-slider-range" ).position().left );
+          		jQuery( "#barb" ).css('left',-80+leftwidth+percentage/2+"px");
+          		jQuery( "#contentb" ).css('left',-50+leftwidth/2+"px");
+          		jQuery( "#totalb" ).css('left',-100+(percentage+leftwidth)/2+"px");
+               }
 		});
 
 		jQuery( "#mantra_sidewidth" ).val( <?php echo $mantra_options['mantra_sidewidth'];?> );
 		jQuery( "#mantra_sidebar" ).val( <?php echo $mantra_options['mantra_sidebar'];?> );
-
 		var percentage =  <?php echo ($mantra_options['mantra_sidebar']/1980)*100;?> ;
 		var leftwidth =  <?php echo ($mantra_options['mantra_sidewidth']/1980)*100;?> ;
-
 		jQuery( "#barb" ).css('left',-18+leftwidth+percentage/2+"%");
 		jQuery( "#contentb" ).css('left',-8+leftwidth/2+"%");
 		jQuery( "#totalb" ).css('left',-20+(percentage+leftwidth)/2+"%");
-
-});
-
-jQuery( "#slider-range" ).bind( "slide", function(event, ui) {
-		range=ui.values[ 1 ] - ui.values[ 0 ];
-
-		if (ui.values[ 0 ]<500) {ui.values[ 0 ]=500; return false;};
-		if(	range<220 || range>800 ){ ui.values[ 1 ] =  <?php echo $mantra_options['mantra_sidebar']+$mantra_options['mantra_sidewidth'];?>; return false;  };
-
-		jQuery( "#mantra_sidewidth" ).val( ui.values[ 0 ] );
-		jQuery( "#mantra_sidebar" ).val( ui.values[ 1 ] - ui.values[ 0 ] );
-		jQuery( "#totalsize" ).html( ui.values[ 1 ]);
-		jQuery( "#contentsize" ).html( ui.values[ 0 ]);jQuery( "#barsize" ).html( ui.values[ 1 ]-ui.values[ 0 ]);
-
-		var	percentage =parseInt(	jQuery( "#slider-range .ui-slider-range" ).css('width'));
-		var leftwidth =	parseInt(jQuery( "#slider-range .ui-slider-range" ).position().left);
-		jQuery( "#barb" ).css('left',-80+leftwidth+percentage/2+"px");
-		jQuery( "#contentb" ).css('left',-50+leftwidth/2+"px");
-		jQuery( "#totalb" ).css('left',-100+(percentage+leftwidth)/2+"px");
 
 });
 
@@ -153,7 +145,20 @@ jQuery(function() {
 			min: 0,
 			max: 100,
 			values: [ <?php echo $mantra_options['mantra_sidewidthRel'] ?>, <?php echo ($mantra_options['mantra_sidewidthRel']+$mantra_options['mantra_sidebarRel']); ?> ],
-			slide: function( event, ui ) {}
+			slide: function( event, ui ) {
+     			range=ui.values[ 1 ] - ui.values[ 0 ];
+      			if (ui.values[ 0 ]<40) {ui.values[ 0 ]=40; return false;};
+     			if(	range<20 || range>50 ){ ui.values[ 1 ] =  <?php echo $mantra_options['mantra_sidebarRel']+$mantra_options['mantra_sidewidthRel'];?>; return false;  };
+               	jQuery( "#mantra_sidewidthRel" ).val( ui.values[ 0 ] );
+     			jQuery( "#mantra_sidebarRel" ).val( ui.values[ 1 ] - ui.values[ 0 ] );
+     			jQuery( "#totalsizeRel" ).html( ui.values[ 1 ]);
+     			jQuery( "#contentsizeRel" ).html( ui.values[ 0 ]);jQuery( "#barsizeRel" ).html( ui.values[ 1 ]-ui.values[ 0 ]);
+     			var percentageRel = parseInt( jQuery( "#slider-rangeRel .ui-slider-range" ).css('width') );
+     			var leftwidthRel = parseInt( jQuery( "#slider-rangeRel .ui-slider-range" ).position().left );
+     			jQuery( "#barbRel" ).css('left',-80+leftwidthRel+percentageRel/2+"px");
+     			jQuery( "#contentbRel" ).css('left',-50+leftwidthRel/2+"px");
+     			jQuery( "#totalbRel" ).css('left',-100+(percentageRel+leftwidthRel)/2+"px");
+               }
 		});
 
 		jQuery( "#mantra_sidewidthRel" ).val( <?php echo $mantra_options['mantra_sidewidthRel'];?> );
@@ -165,23 +170,6 @@ jQuery(function() {
 		jQuery( "#totalbRel" ).css('left',-20+(percentageRel+leftwidthRel)/2+"%");
 });
 
-jQuery( "#slider-rangeRel" ).bind( "slide", function(event, ui) {
-			range=ui.values[ 1 ] - ui.values[ 0 ];
-
- 			if (ui.values[ 0 ]<40) {ui.values[ 0 ]=40; return false;};
-			if(	range<20 || range>50 ){ ui.values[ 1 ] =  <?php echo $mantra_options['mantra_sidebarRel']+$mantra_options['mantra_sidewidthRel'];?>; return false;  };
-
-			jQuery( "#mantra_sidewidthRel" ).val( ui.values[ 0 ] );
-			jQuery( "#mantra_sidebarRel" ).val( ui.values[ 1 ] - ui.values[ 0 ] );
-			jQuery( "#totalsizeRel" ).html( ui.values[ 1 ]);
-			jQuery( "#contentsizeRel" ).html( ui.values[ 0 ]);jQuery( "#barsizeRel" ).html( ui.values[ 1 ]-ui.values[ 0 ]);
-
-			var	percentageRel =parseInt(	jQuery( "#slider-rangeRel .ui-slider-range" ).css('width'));
-			var leftwidthRel =	parseInt(jQuery( "#slider-rangeRel .ui-slider-range" ).position().left);
-			jQuery( "#barbRel" ).css('left',-80+leftwidthRel+percentageRel/2+"px");
-			jQuery( "#contentbRel" ).css('left',-50+leftwidthRel/2+"px");
-			jQuery( "#totalbRel" ).css('left',-100+(percentageRel+leftwidthRel)/2+"px");
-});
 
 </script>
 
@@ -266,6 +254,22 @@ foreach($items as $id=>$item) {
 	echo "<div><small>".__("Enable the presentation front-page. This will become your new home page. It has a slider and columns for presentation
 		text and images.<br>If you have this enabled but don't see a Presentation page then go to <a href='options-reading.php'> Settings &raquo; Reading </a> and make sure you have selected <strong>Front Page Displays</strong> as <Strong>Your Latest Posts</strong>.","mantra")."</small></div>";
 
+}
+
+function cryout_setting_frontposts_fn() {
+	global $mantra_options;
+	$items = array ("Enable" , "Disable");
+	$itemsare = array( __("Enable","mantra"), __("Disable","mantra"));
+	echo "<select id='mantra_frontposts' name='ma_options[mantra_frontposts]'>";
+	foreach($items as $id=>$item) {
+		echo "<option value='$item'";
+		selected($mantra_options['mantra_frontposts'],$item);
+		echo ">$itemsare[$id]</option>";
+	}
+	echo "</select> ";
+	echo "<input type='text' id='mantra_frontpostscount' name='ma_options[mantra_frontpostscount]' size='3' value='";
+	echo $mantra_options['mantra_frontpostscount']."'> ".__('posts','mantra');
+	echo "<div><small>".__("Enable to display latest posts on the presentation page, below the columns. Sticky posts are always displayed and not counted.","mantra")."</small></div>";
 }
 
 //CHECKBOX - Name: ma_options[frontslider]
@@ -701,20 +705,23 @@ function  cryout_setting_hheight_fn() {
 <?php
 $totally = $mantra_options['mantra_sidebar']+$mantra_options['mantra_sidewidth']+50;
 
-$checkedClass = ($mantra_options['mantra_hcenter']=='1') ? ' checkedClass' : '';
-
-//echo " <label id='hcenter' for='mantra_hcenter' class='socialsdisplay $checkedClass'><input  "; checked($mantra_options['mantra_hcenter'],'1');
-//echo "value='1' id='mantra_hcenter'  name='ma_options[mantra_hcenter]' type='checkbox' style='margin-left:20px;'/> ".__('Center the header image horizontally','mantra')." </label>";
 echo "<div><small>".__("Select the header's height. After saving the settings make sure you reupload a new header image (if you're using one). The header's width will be = ","mantra").$totally."px.</small></div>";
 }
 
 function cryout_setting_himage_fn() {
 	global $mantra_options;
 	$checkedClass = ($mantra_options['mantra_hcenter']=='1') ? ' checkedClass' : '';
+	$checkedClass2 = ($mantra_options['mantra_hratio']=='1') ? ' checkedClass' : '';
 	echo "<a href=\"?page=custom-header\" class=\"button\" target=\"_blank\">".__('Define header image')."</a>";
-	echo " <label id='hcenter' for='mantra_hcenter' class='socialsdisplay $checkedClass'><input ";
+	echo "<div><small>".__("The header image should not be used to display logos.<br> Enable ratio preservation to force the header image aspect ratio. Keep in mind that short images will become very small on mobile devices.","mantra")."</small></div>";
+	echo "<br><label id='hcenter' for='mantra_hcenter' class='socialsdisplay $checkedClass'><input ";
 		 checked($mantra_options['mantra_hcenter'],'1');
-	echo " value='1' id='mantra_hcenter' name='ma_options[mantra_hcenter]' type='checkbox' style='margin-left:20px;'/> Center the header image horizontally </label>";
+	echo " value='1' id='mantra_hcenter' name='ma_options[mantra_hcenter]' type='checkbox'/> Center the header image horizontally </label>";
+
+	echo " <label id='hratio' for='mantra_hratio' class='socialsdisplay $checkedClass2'><input ";
+		 checked($mantra_options['mantra_hratio'],'1');
+	echo " value='1' id='mantra_hratio' name='ma_options[mantra_hratio]' type='checkbox' style='margin-left:10px;'/> Keep header image aspect ratio </label>";
+	
 }
 
 //CHECKBOX - Name: ma_options[menurounded]
@@ -997,7 +1004,7 @@ foreach($fontCursive as $item) {
 }
 	echo "</optgroup>";
 	echo "</select>";
-	echo "<div><small>".__("Select the font family you want your subheaders to have (h2 - h6 tags will be affected). Leave 'Default' and the general font you selected will be used.","mantra")."</small></div><br>";
+	echo "<div><small>".__("Select the font family you want your headings to have (h1 - h6 tags will be affected). Leave 'Default' and the general font you selected will be used.","mantra")."</small></div><br>";
 
 	echo '<input class="googlefonts" type="text" size="45" value="'.esc_attr($mantra_options['mantra_googlefontsubheader']).'"  name="ma_options[mantra_googlefontsubheader]" id="mantra_googlefontsubheader" />';
 	echo "<div><small>".__("Or insert your Google Font below. Please only isert the <strong>name</strong> of the font.<br /> Ex: Marko One. Go to <a href='http://www.google.com/webfonts' > google fonts </a> for some font inspiration.","mantra")."</small></div>";
@@ -1049,6 +1056,21 @@ foreach($items as $id=>$item) {
 	echo "</select>";
 	echo "<div><small>".__("This overwrites the text alignment in posts and pages. Leave 'Default' for normal settings (alignment will remain as declared in posts, comments etc.).","mantra")."</small></div>";
 }
+
+//SELECT - Name: ma_options[parindent]
+function  cryout_setting_parmargin_fn() {
+	global $mantra_options;
+	$items = array ("0.0em", "0.5em", "1.0em" , "1.1em" , "1.2em" , "1.3em" , "1.4em", "1.5em", "1.6em", "1.7em");
+	echo "<select id='mantra_parmargin' name='ma_options[mantra_parmargin]'>";
+foreach($items as $item) {
+	echo "<option value='$item'";
+	selected($mantra_options['mantra_parmargin'],$item);
+	echo ">$item</option>";
+}
+	echo "</select>";
+	echo "<div><small>".__("Choose the spacing between paragraphs.","mantra")."</small></div>";
+}
+
 
 //SELECT - Name: ma_options[parindent]
 function  cryout_setting_parindent_fn() {
@@ -1343,6 +1365,20 @@ foreach($items as $id=>$item) {
 }
 	echo "</select>";
 	echo "<div><small>".__("Show numbered pagination. Where there is more than one page, instead of the bottom <b>Older Posts</b> and <b>Newer posts</b> links you have a numbered pagination. ","mantra")."</small></div>";
+}
+
+function cryout_setting_menualign_fn() {
+	global $mantra_options;
+	$items = array ("left", "center", "right");
+	$itemsare = array( __("Left","mantra"), __("Center","mantra"), __("Right","mantra"));
+	echo "<select id='mantra_menualign' name='ma_options[mantra_menualign]'>";
+foreach($items as $id=>$item) {
+	echo "<option value='$item'";
+	selected($mantra_options['mantra_menualign'],$item);
+	echo ">$itemsare[$id]</option>";
+}
+	echo "</select>";
+	echo "<div><small>".__("Select the desired main menu items alignment. Center option is only valid for single line menus.","mantra")."</small></div>";
 }
 
 //SELECT - Name: ma_options[caption]

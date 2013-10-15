@@ -40,6 +40,11 @@ function minileven_setup() {
 	 */
 	require( get_template_directory() . '/inc/tweaks.php' );
 
+	/**
+	 * Implement the Custom Header functions
+	 */
+	require( get_template_directory() . '/inc/custom-header.php' );
+
 	/* Make Minileven available for translation.
 	 * Translations can be added to the /languages/ directory.
 	 * If you're building a theme based on Minileven, use a find and replace
@@ -135,17 +140,16 @@ function minileven_posts_per_page() {
 }
 add_filter('pre_option_posts_per_page', 'minileven_posts_per_page');
 
-/* This function determines the actual theme the user is using. */
+/**
+ * Determine the currently active theme.
+ */
 function minileven_actual_current_theme() {
-	if ( function_exists( 'jetpack_mobile_template' ) )
-		remove_action( 'option_template', 'jetpack_mobile_template' );
+	$removed = remove_action( 'option_stylesheet', 'jetpack_mobile_stylesheet' );
+	$stylesheet = get_option( 'stylesheet' );
+	if ( $removed )
+		add_action( 'option_stylesheet', 'jetpack_mobile_stylesheet' );
 
-	$template = get_option( 'template' );
-
-	if ( function_exists( 'jetpack_mobile_template' ) )
-		add_action( 'option_template', 'jetpack_mobile_template' );
-
-	return $template;
+	return $stylesheet;
 }
 
 /* This function grabs the location of the custom menus from the current theme. If no menu is set in a location
@@ -176,11 +180,6 @@ function minileven_get_background() {
 	}
 	return false;
 }
-
-/**
- * Implement the Custom Header functions
- */
-require( get_template_directory() . '/inc/custom-header.php' );
 
 /**
  * If the user has set a static front page, show all posts on the front page, instead of a static page.

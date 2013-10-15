@@ -49,10 +49,10 @@
 
 /* Social media links */
 
-	$socialNetworks = array ("Delicious", "DeviantArt", "Digg", "Etsy", "Facebook", "Flickr", "Google", "GoodReads", "GooglePlus",
-                              "Instagram", "LastFM", "LinkedIn", "Mail", "MySpace", "Picasa", "Pinterest", "Reddit", "RSS", "Skype",
+	$socialNetworks = array ("Amazon", "Delicious", "DeviantArt", "Digg", "Etsy", "Facebook", "Flickr", "Google", "GoodReads", "GooglePlus",
+                              "IMDb", "Instagram", "LastFM", "LinkedIn", "Mail", "MySpace", "Picasa", "Pinterest", "Reddit", "RSS", "Skype",
                               "SoundCloud", "StumbleUpon", "Technorati", "Tumblr", "Twitch", "Twitter", "Vimeo", "VK", "WordPress",
-                              "Xing", "Yahoo", "YouTube" );
+                              "Xing", "Yahoo", "Yelp", "YouTube" );
 
 
 
@@ -125,7 +125,7 @@ global $mantra_defaults;
 	}
 
 	$input['mantra_favicon'] =  esc_url_raw($input['mantra_favicon']);
-	$input['mantra_headerupload'] =  esc_url_raw($input['mantra_headerupload']);
+	$input['mantra_logoupload'] =  esc_url_raw($input['mantra_logoupload']);
 	$input['mantra_headermargintop'] =  intval(wp_kses_data($input['mantra_headermargintop']));
 	$input['mantra_headermarginleft'] =  intval(wp_kses_data($input['mantra_headermarginleft']));
 
@@ -163,6 +163,8 @@ global $mantra_defaults;
 	$input['mantra_googlefonttitle2'] = $mantra_googlefonttitle2;
 	$input['mantra_googlefontside2'] = $mantra_googlefontside2;
 	$input['mantra_googlefontsubheader2'] = $mantra_googlefontsubheader2;
+	
+	$input['mantra_frontpostscount'] =  intval(wp_kses_data($input['mantra_frontpostscount']));
 
 	$input['mantra_fpsliderborderwidth'] =  intval(wp_kses_data($input['mantra_fpsliderborderwidth']));
 

@@ -34,7 +34,7 @@ Template Name: NewsFrame
                         <?php
                             include_once(ABSPATH.WPINC.'/feed.php');
                             $rssfeed = fetch_feed('http://rss.cnn.com/rss/edition_technology.rss');
-                            $maxitems = $rssfeed->get_item_quantity(5);
+                            $maxitems = $rssfeed->get_item_quantity(12);
                             $rssnews = $rssfeed->get_items(0, $maxitems);
                             if ($maxitems == 0) {
                         ?>

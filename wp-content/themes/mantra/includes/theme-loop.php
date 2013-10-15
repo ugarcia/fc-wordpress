@@ -67,6 +67,27 @@ function mantra_custom_excerpt_more( $output ) {
 add_filter( 'get_the_excerpt', 'mantra_custom_excerpt_more' );
 
 /**
+ * Adds a "Continue Reading" link to post excerpts created using the <!--more--> tag.
+ *
+ * To override this link in a child theme, remove the filter and add your own
+ * function tied to the the_content_more_link filter hook.
+ *
+ * @since mantra 2.1
+ * @return string Excerpt with a pretty "Continue Reading" link
+ */
+function mantra_more_link($more_link, $more_link_text) {
+	global $mantra_excerptcont;
+	$new_link_text = $mantra_excerptcont;
+	if (preg_match("/custom=(.*)/",$more_link_text,$m) ) {
+		$new_link_text = $m[1];
+	};
+	$more_link = str_replace($more_link_text, $new_link_text.' <span class="meta-nav">&rarr; </span>', $more_link);
+	$more_link = str_replace('more-link', 'continue-reading-link', $more_link);
+	return $more_link;
+}
+add_filter('the_content_more_link', 'mantra_more_link',10,2);
+
+/**
  * Allows post excerpts to contain HTML tags
  * @since mantra 1.8.7
  * @return string Excerpt with most HTML tags intact
@@ -263,7 +284,7 @@ $image_src = cryout_echo_first_image($post->ID);
 			the_post_thumbnail( 'custom', array("class" => "align".strtolower($mantra_falign)." post_thumbnail" ) ); 
 
 	else if ($mantra_fpost=='Enable' && $mantra_fauto=="Enable" && $image_src && ($mantra_excerptarchive != "Full Post" || $mantra_excerpthome != "Full Post")) 
-			echo '<a title="'.the_title_attribute('echo=0').'" href="'.get_permalink().'" ><img title="" alt="" class="align'.strtolower($mantra_falign).' post_thumbnail" src="'.$image_src.'"></a>' ;
+			echo '<a title="'.the_title_attribute('echo=0').'" href="'.get_permalink().'" ><img width="'.$mantra_fwidth.'" title="" alt="" class="align'.strtolower($mantra_falign).' post_thumbnail" src="'.$image_src.'"></a>' ;
 							
 	}
 endif; // mantra_set_featured_thumb

@@ -13,14 +13,14 @@ foreach ($mantra_options as $key => $value) {
      ${"$key"} = esc_attr($value) ;
 }
 if ($mantra_dimselect=="Absolute") {
-$totalwidth= $mantra_sidewidth+$mantra_sidebar+50;
+$totalwidth = $mantra_sidewidth+$mantra_sidebar+50;
 $contentSize = $mantra_sidewidth;
-$sidebarSize= $mantra_sidebar;
+$sidebarSize = $mantra_sidebar;
 }
 else if ($mantra_dimselect=="Relative") {
-$totalwidth= $mantra_sidewidthRel+$mantra_sidebarRel;
+$totalwidth = $mantra_sidewidthRel+$mantra_sidebarRel;
 $contentSize = intval(($mantra_sidewidthRel/$totalwidth*100)-2);
-$sidebarSize= intval(($mantra_sidebarRel/$totalwidth*100)-2);
+$sidebarSize = intval(($mantra_sidebarRel/$totalwidth*100)-2);
 }
 ob_start(); ?>
 
@@ -68,7 +68,7 @@ if ($mantra_dimselect=="Absolute") { ?>
 	else { // IF NO PAGE TEMPLATE HAS BEEN SELECTED
 
 	 if ($mantra_side == "1c" ) { ?>
-#content {width:<?php echo ($totalwidth-50) ?>px; margin:20px;margin-top:0px;}  <?php }
+#content {width:<?php echo ($totalwidth-40) ?>px; margin:20px;margin-top:0px;}  <?php }
 
 ?><?php  if ($mantra_side == "2cSr" ) { ?>
 #content { width:<?php echo ($contentSize- 10) ?>px;}
@@ -178,7 +178,7 @@ else if ($mantra_dimselect=="Relative") { ?>
  * THE REST OF THE CSS
  */
 ?>
-.entry-content p, .entry-content ul, .entry-content ol {
+#content, #content p, #content ul, #content ol, #content input, #content select, #content textarea{
 font-size:<?php echo $mantra_fontsize ?>;
 <?php if ($mantra_lineheight != "Default") { ?>line-height:<?php echo $mantra_lineheight ?>; <?php }
 ?><?php if ($mantra_wordspace != "Default") { ?>word-spacing:<?php echo $mantra_wordspace ?>;<?php }
@@ -229,7 +229,7 @@ $mantra_googlefontsubheader = str_replace('+',' ',preg_replace('/:.*/i','',$mant
 ?><?php if ($mantra_footercolor != "171717") { ?> #footer2 { background-color:<?php echo $mantra_footercolor; ?>  ;}<?php }
 ?><?php if ($mantra_titlecolor != "0D85CC") { ?> #site-title span a { color:<?php echo $mantra_titlecolor; ?>  ;}<?php }
 ?><?php if ($mantra_descriptioncolor != "0D85CC") { ?> #site-description { color:<?php echo $mantra_descriptioncolor; ?>  ;}<?php }
-?><?php if ($mantra_contentcolor != "333333") { ?> .entry-content p, .entry-content ul, .entry-content ol { color:<?php echo $mantra_contentcolor; ?>  ;}<?php }
+?><?php if ($mantra_contentcolor != "333333") { ?> #content, #content p, #content ul, #content ol { color:<?php echo $mantra_contentcolor; ?>  ;}<?php }
 ?><?php if ($mantra_linkscolor != "0D85CC") { ?> .widget-area a:link, .widget-area a:visited, a:link, a:visited ,#searchform #s:hover , #container #s:hover, #access a:hover, #wp-calendar tbody td a , #site-info a ,#site-copyright a, #access li:hover > a, #access ul ul :hover > a { color:<?php echo $mantra_linkscolor; ?>;}<?php }
 ?><?php if ($mantra_hovercolor != "333333") { ?>  a:hover, .entry-meta a:hover, .entry-utility a:hover , .widget-area a:hover { color:<?php echo $mantra_hovercolor; ?> ;}<?php }
 ?><?php if ($mantra_headtextcolor != "333333") { ?> #content .entry-title a, #content .entry-title, #content h1, #content h2, #content h3, #content h4, #content h5, #content h6{ color:<?php echo $mantra_headtextcolor; ?> ;}<?php }
@@ -237,11 +237,17 @@ $mantra_googlefontsubheader = str_replace('+',' ',preg_replace('/:.*/i','',$mant
 ?><?php if ($mantra_sideheadbackcolor != "444444") { ?> .widget-title,#footer-widget-area .widget-title { background-color:<?php echo $mantra_sideheadbackcolor; ?> ;}<?php }
 ?><?php if ($mantra_sideheadtextcolor != "2EA5FD") { ?> .widget-title { color:<?php echo $mantra_sideheadtextcolor; ?>  ;}<?php }
 
-?><?php if ($mantra_magazinelayout == "Enable") { ?> #content article.post{float:left;width:47%;margin-right:3%; }  #content article.sticky { margin-right:3%;padding:0; } #content article:nth-of-type(2n+1) {clear: both;}  <?php }
+?><?php if ($mantra_magazinelayout == "Enable") { ?> #content article.post{float:left;width:47%;margin-right:3%; }  #content article.sticky { margin-right:3%;padding:0; } #content article.sticky > * {margin:2%;} #content article:nth-of-type(2n+1) {clear: both;}  <?php }
 
 ?><?php if (1) { ?> #footer-widget-area .widget-title { color:<?php echo $mantra_footerheader; ?> ; ;}<?php }
 ?><?php if (1) { ?> #footer-widget-area a { color:<?php echo $mantra_footertext; ?>  ;}<?php }
 ?><?php if (1) { ?> #footer-widget-area a:hover { color:<?php echo $mantra_footerhover; ?>  ;}<?php }
+
+switch ($mantra_menualign):
+    case "center": ?> #access ul { display: table; margin: 0 auto; } <?php break;
+	case "right": ?> #access ul li { float: right; } <?php break;
+	default: break;
+endswitch;
 
 ?><?php if ($mantra_pin != "Pin2") { ?> #content .wp-caption { background-image:url(<?php echo get_template_directory_uri()."/images/pins/".$mantra_pin; ?>.png)  ;} <?php }
 ?><?php if ($mantra_sidebullet != "arrow_white") { ?>.widget-area ul ul li{ background-image:url(<?php echo get_template_directory_uri()."/images/bullets/".$mantra_sidebullet; ?>.png);background-position: 0px 8px ;}<?php }
@@ -255,39 +261,13 @@ $mantra_googlefontsubheader = str_replace('+',' ',preg_replace('/:.*/i','',$mant
 ?><?php if ($mantra_postcateg == "Hide") { ?>.entry-meta span.bl_categ {display:none;} <?php }
 ?><?php if ($mantra_posttag == "Hide") { ?> .entry-utility span.bl_posted, .entry-meta2 span.bl_tagg,.entry-meta3 span.bl_tagg {display:none;} <?php }
 ?><?php if ($mantra_postbook == "Hide") { ?> .entry-utility span.bl_bookmark {display:none;} <?php }
+?><?php if ($mantra_parmargin) { ?> #content p, .entry-content ul, .entry-summary ul , .entry-content ol, .entry-summary ol { margin-bottom:<?php echo $mantra_parmargin; ?>;} <?php } 
 ?><?php if ($mantra_parindent != "0px") { ?>  p {text-indent:<?php echo $mantra_parindent;?> ;} <?php }
 ?><?php if ($mantra_posttime == "Hide") { ?> .entry-meta .entry-time {display:none;} <?php }
 ?><?php if ($mantra_postmetas == "Hide") { ?> #content .entry-meta {display:none;} <?php }
-?><?php if (($mantra_mobile == "Enable") &&  $mantra_hcontain) { ?> #branding{ -webkit-background-size:contain !important;-moz-background-size:contain !important;background-size:contain !important; } <?php } ?><?php
-// Header styling and image loading
-// Check if this is a post or page, if it has a thumbnail, and if it's a big one
-/*
-global $post;
-					if ( is_singular() &&
-							has_post_thumbnail( $post->ID ) && $mantra_fheader == "Enable" &&
-							(  $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ) ) &&
-							$image[1] >= HEADER_IMAGE_WIDTH ) : ?>
-
-									#branding {background:url(<?php echo $image[0]; ?>) no-repeat;height:<?php echo HEADER_IMAGE_HEIGHT; ?>px;}
-
-					<?php else : if (get_header_image() != '') { ?>
-						  #branding {background:url("<?php header_image(); ?>") no-repeat;
-								<?php if ($mantra_dimselect=="Absolute") { ?>
-										width:<?php echo HEADER_IMAGE_WIDTH; ?>px; <?php } ?> height:<?php echo HEADER_IMAGE_HEIGHT; ?>px;}
-																	<?php }
-					else {}
-					endif;
-
-				if ($mantra_options['mantra_linkheader']=="Enable") { ?>
-					#linky { display:block; position:absolute; width:<?php echo HEADER_IMAGE_WIDTH; ?>px; height:<?php echo HEADER_IMAGE_HEIGHT; ?>px; z-index:1; }
-					#branding { height:<?php echo HEADER_IMAGE_HEIGHT; ?>px; }
-					#site-title, #site-description, #sheader { position:relative; z-index:2 }
-				<?php }
-
-			*/	?>
-
+?><?php if (($mantra_mobile == "Enable") &&  $mantra_hcontain) { ?> #branding{ -webkit-background-size:contain !important;-moz-background-size:contain !important;background-size:contain !important; } <?php } ?>
 #branding { height:<?php echo HEADER_IMAGE_HEIGHT; ?>px ;}
-
+<?php if ($mantra_hratio) { ?> @media (max-width: 800px) {#branding, #bg_image { min-height:inherit !important; } }	<?php } ?>
 </style>
 
 <?php  	$mantra_custom_styling = ob_get_contents();

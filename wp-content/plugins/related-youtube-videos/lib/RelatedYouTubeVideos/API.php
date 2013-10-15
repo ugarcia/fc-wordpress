@@ -24,26 +24,23 @@ class RelatedYouTubeVideos_API {
    *
    * @return mixed              Will return FALSE in case the request was invalid or some other error has occured (like a timeout) or an array containing the search results.
    */
-/*
-  // Downwards compatibility?!
-  public function searchYouTube( $args, $orderBy = '', $start = '', $max = '', $apiVersion = 2 ) {
-  
-    if ( !is_array( $args ) ) {
-      
-      $args = array();
-      
-      $args['searchTerms']  = $args;
-      $args['orderBy']      = $orderBy;
-      $args['start']        = $start;
-      $args['max']          = $max;
-      $args['apiVersion']   = $apiVersion;
-      
-    }
-*/  
+ 
   public function searchYouTube( $args ) {
 
     $searchTerms  = isset( $args['searchTerms'] ) ? $args['searchTerms']      : '';
+    
+    if( $searchTerms == '' && isset( $args['terms'] ) ) {
+      
+      $searchTerms = $args['terms'];
+      
+    }
 
+    if( $searchTerms == '' && isset( $args['search'] ) ) {
+      
+      $searchTerms = $args['search'];
+      
+    }
+    
     $orderBy      = isset( $args['orderBy'] )     ? $args['orderBy']          : '';
 
     $start        = isset( $args['start'] )       ? $args['start']            : '';
@@ -55,23 +52,45 @@ class RelatedYouTubeVideos_API {
     $exact        = ( isset( $args['exact'] ) && $args['exact'] === true ) ? true : false;
 
     $searchTerms  = ( $exact === true ) ? '%22' . urlencode( $searchTerms ) . '%22' : urlencode( $searchTerms );
-    
+
     $orderBy      = urlencode( $orderBy );
-    
+
+    $duration     = ( isset( $args['duration'] ) && preg_match( '#^(short|medium|long)$#i', trim( $args['duration']  ) ) ) ? trim( strtolower( $args['duration'] ) ) : '';
+
     $start        = (int) $start +1;
     
     $max          = (int) $max;
-  
-    $target       = 'http://gdata.youtube.com/feeds/api/videos?q=' . $searchTerms . '&orderby=' . $orderBy . '&start-index=' . $start . '&max-results=' . $max . '&v=2';
+    
+    $random       = ( isset( $args['random'] ) && $args['random'] > $max )  ? (int) $args['random'] : $max;
 
-      // CHANGE::simplexml_load_file() does not work ....
+    
+    if( $random > $max ) {
+      
+      $target       = 'http://gdata.youtube.com/feeds/api/videos?q=' . $searchTerms . '&orderby=' . $orderBy . '&start-index=' . $start . '&max-results=' . $random . '&v=2';
+      
+    }
+    else {
+  
+      $target       = 'http://gdata.youtube.com/feeds/api/videos?q=' . $searchTerms . '&orderby=' . $orderBy . '&start-index=' . $start . '&max-results=' . $max . '&v=2';
+    
+    }
+
+    if( $duration !== '' ) {
+      
+      $target .= '&duration=' . $duration;
+      
+    }
+	
+	/* Uncomment the following in case simplexml_load_file() does not work ....
       $ch = curl_init($target);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       $data = curl_exec($ch);
       $xml = simplexml_load_string($data);
-
-      // @todo (future feature) $target caching with the filename containing the blog ID for MultiSite use!
-      // $xml          = simplexml_load_file( $target );
+	  */
+	
+	// Comment the following in case simplexml_load_file() does not work ....
+    // @todo (future feature) $target caching with the filename containing the blog ID for MultiSite use!
+    $xml          = simplexml_load_file( $target );
 
     if( !is_object( $xml ) ) {
     
@@ -92,8 +111,54 @@ class RelatedYouTubeVideos_API {
       $result[]    = $video;
 
     }
+
+    /* {max} random videos out of {random} */
+    if( $random > $max ) {
+
+      $total = count( $result );
+      
+      if( $total < $random ) {
+        
+        $random = $total;
+        
+      }
+
+      $count      = 0;
+      
+      $randIndex  = array();
+
+      /* Generate random index numbers, between 0 and $random */
+      while( $count < $max ) {
+        
+        $tmp = mt_rand( 0, ( $random -1 ) );
+        
+        if( !in_array( $tmp, $randIndex ) ) {
+          
+          $randIndex[] = $tmp;
+          
+          $count++;
+          
+        }
+        
+      }
+
+      /* Use the random index number so re-build the results array */
+      $randResults = array();
+
+      foreach( $randIndex as $index ) {
+        
+        $randResults[] = $result[ $index ];
+        
+      }
+
+      return $randResults;
+      
+    }
+    else {
     
-    return $result;
+      return $result;
+    
+    }
 
   }
 
@@ -122,7 +187,7 @@ class RelatedYouTubeVideos_API {
       return '<!-- [relatedYouTubeVideos] Error: ' . str_replace( '_', ' ', $results['error'] ) . '! -->';
 
     }
-    
+
     $class  = isset( $args['class'] )   ? 'class="relatedYouTubeVideos ' . strip_tags( $args['class'] ) . '"' : 'class="relatedYouTubeVideos"';
     
     $id     = isset( $args['id'] )      ? 'id="' . strip_tags( $args['id'] ) . '"'                            : '';
@@ -136,42 +201,151 @@ class RelatedYouTubeVideos_API {
      */
     $html   = '';
     
-    $html   .= '  <ul class="youtubeResults">' . "\n";
+    /**
+     * In PREVIEW mode only the images will be displayed. When clicked such an image will be replace with the video.
+     * This requires Javascript to be enabled in the browser!!
+     */
 
-    foreach( $results as $video ) {
+    if( isset( $args['preview'] ) && $args['preview'] === true ) {
 
-      // Try detecting the YouTube Video ID 
-      preg_match( '#\?v=([^&]*)&#i', $video->link['href'], $match );
-  
-      $videoID    = isset( $match[1] )      ? (string) $match[1]          : null;
-  
-      $videoTitle = isset( $video->title )  ? strip_tags( $video->title ) : 'YouTube Video';
-  
-      $html .= "   <li>\n";
-
-      /**
-       * This is meant to be valid (x)HTML embedding of the videos, so please correct me if I'm wrong!
-       */
-      if( $videoID != null ) {
-
-        $html .= '    <object type="application/x-shockwave-flash" data="http://www.youtube.com/v/' . $videoID  . '" width="' . $width . '" height="' . $height . '">' . "\n";
-        $html .= '     <param name="movie" value="http://www.youtube.com/v/' . $videoID . '" />' . "\n";
-        $html .= '     <param name="wmode" value="transparent" />' . "\n";
-        $html .= '     <a href="http://www.youtube.com/watch?v=' . $videoID . '"><img src="http://img.youtube.com/vi/' . $videoID . '/0.jpg" alt="' . $videoTitle . '" /><br />YouTube Video</a>' . "\n";
-        $html .= "    </object>\n";
-  
-      }
-      else {
-
-        $html .= '  <li><a href="' . $video->link['href'] . '" title="' . $videoTitle . '">' . $videoTitle . '</a></li>';
-
-      }
-
-      $html .= "   </li>\n";
-
+      $jsFunction =<<<EOF
+<script type="text/javascript">
+if( typeof showRelatedVideo !== 'function' ) {
+  function showRelatedVideo( config ) {
+    
+    'use strict';
+    
+    if( undefined === config.videoID ) {
+      return '<i>Invalid Video ID</i>';
     }
 
-    $html   .= "  </ul>\n";
+    if( undefined === config.width ) {
+      config.width = 480;
+    }
+    
+    if( undefined === config.height ) {
+      config.height = 360;
+    }
+
+    var video = '',
+        videoTitle = ( undefined === config.title ) ? '' : config.title;
+    
+    video += '<object type="application/x-shockwave-flash" data="http://www.youtube.com/v/' +  config.videoID + '?autoplay=1" width="' + config.width +  '" height="' + config.height + '">';
+    video += ' <param name="movie" value="http://www.youtube.com/v/' + config.videoID + '" />';
+    video += ' <param name="wmode" value="transparent" />';
+    video += ' <param name="allowfullscreen" value="true" />';
+    video += ' <a href="http://www.youtube.com/watch?v=' + config.videoID + '"><img src="http://img.youtube.com/vi/' + config.videoID + '/0.jpg" alt="' + videoTitle + '" /><br />YouTube Video</a>';
+    video += '</object>';
+    
+    if( undefined !== config.title ) {
+      video += '<div class="title">' + config.title + '</div>';
+    }
+    
+    if( undefined !== config.description ) {
+      video += '<div class="description">' + config.description + '</div>';
+    }
+
+    return video;
+
+  }
+}
+</script>
+EOF;
+
+      $html   .= $jsFunction;
+      
+      $html   .= '  <ul ' . $class . ' ' . $id . '>' . "\n";
+
+      foreach( $results as $video ) {
+
+        // Try detecting the YouTube Video ID 
+        preg_match( '#\?v=([^&]*)&#i', $video->link['href'], $match );
+  
+        $videoID          = isset( $match[1] )      ? (string) $match[1]          : null;
+  
+        $videoTitle       = isset( $video->title )  ? strip_tags( $video->title ) : 'YouTube Video';
+
+        $videoDescription = (string) $video->children('media', true)->group->children('media', true )->description;
+
+        
+        $videoTitle       = ( isset( $args['showvideotitle'] ) && $args['showvideotitle'] === true ) ? ", videoTitle : '" . $videoTitle . "'" : '';
+
+        $videoDescription = ( isset( $args['showvideodescription'] ) && $args['showvideodescription'] === true ) ? ", description : '" . $videoDescription . "'" : '';
+
+        
+        $argsObj = "{ videoID:'" . $videoID . "', width:" . $width . ", height:" . $height . $videoTitle . $videoDescription . "}";
+  
+        $html .= '   <li onClick="innerHTML = showRelatedVideo(' . $argsObj . ");removeAttribute('onClick');\">\n";
+
+        if( $videoID != null ) {
+
+          $html .= '     <img src="http://img.youtube.com/vi/' . $videoID . '/0.jpg" alt="' . $videoTitle . '" width="' . $width . '" height="' . $height . '" />' . "\n";
+
+        }
+        else {
+
+          $html .= '  <li><a href="' . $video->link['href'] . '" title="' . $videoTitle . '">' . $videoTitle . '</a></li>';
+
+        }
+
+        $html .= "   </li>\n";
+
+      }
+
+      $html   .= "  </ul>\n";
+
+    }
+    else {
+    
+      $html   .= '  <ul ' . $class . ' ' . $id . '>' . "\n";
+
+      foreach( $results as $video ) {
+
+        // Try detecting the YouTube Video ID 
+        preg_match( '#\?v=([^&]*)&#i', $video->link['href'], $match );
+  
+        $videoID    = isset( $match[1] )      ? (string) $match[1]          : null;
+  
+        $videoTitle = isset( $video->title )  ? strip_tags( $video->title ) : 'YouTube Video';
+
+        $videoDescription = (string) $video->children('media', true)->group->children('media', true )->description;
+  
+        $html .= "   <li>\n";
+
+        /**
+         * This is meant to be valid (x)HTML embedding of the videos, so please correct me if I'm wrong!
+         */
+        if( $videoID != null ) {
+
+          $html .= '    <object type="application/x-shockwave-flash" data="http://www.youtube.com/v/' . $videoID  . '" width="' . $width . '" height="' . $height . '">' . "\n";
+          $html .= '     <param name="movie" value="http://www.youtube.com/v/' . $videoID . '" />' . "\n";
+          $html .= '     <param name="wmode" value="transparent" />' . "\n";
+          $html .= '     <param name="allowfullscreen" value="true" />' . "\n";
+          $html .= '     <a href="http://www.youtube.com/watch?v=' . $videoID . '"><img src="http://img.youtube.com/vi/' . $videoID . '/0.jpg" alt="' . $videoTitle . '" /><br />YouTube Video</a>' . "\n";
+          $html .= "    </object>\n";
+
+          if( isset( $args['showvideotitle'] ) && $args['showvideotitle'] === true ) {
+            $html .= '    <div class="title">' . $videoTitle . "</div>\n";
+          }
+        
+          if( isset( $args['showvideodescription'] ) && $args['showvideodescription'] === true ) {
+            $html .= '    <div class="description">' . $videoDescription . "</div>\n";
+          }
+  
+        }
+        else {
+
+          $html .= '  <li><a href="' . $video->link['href'] . '" title="' . $videoTitle . '">' . $videoTitle . '</a></li>';
+
+        }
+
+        $html .= "   </li>\n";
+
+      }
+
+      $html   .= "  </ul>\n";
+    
+    }
 
     return $html;
     
@@ -190,12 +364,15 @@ class RelatedYouTubeVideos_API {
 
     $orderBy      = isset( $args['orderBy'] )     ? strtolower( trim( $args['orderBy'] ) )  : '';
     
+    /* Array indexes are case-sensitive^^ */
+    $orderBy      = isset( $args['orderby'] )     ? strtolower( trim( $args['orderby'] ) )  : $orderBy;
+    
     if( $orderBy !== 'published' && $orderBy !== 'rating' && $orderBy !== 'viewcount' ) {
       
       $orderBy    = 'relevance';
       
     }
-    
+
     // looks like the YouTube API is case sensitive here!
     if( $orderBy == 'viewcount' ) {
 
@@ -204,6 +381,12 @@ class RelatedYouTubeVideos_API {
     }
     
     $start        = isset( $args['start'] )       ? (int) abs( $args['start'] )             : 0;
+    
+    if( $start == 0 && isset( $args['offset'] ) ) {
+      
+      $start = (int) abs( $args['offset'] );
+      
+    }
     
     if( $start < 0 ) {
       
@@ -223,6 +406,10 @@ class RelatedYouTubeVideos_API {
       $max = 10;
       
     }
+
+    $showTitle    = ( isset( $args['showvideotitle'] ) && ( $args['showvideotitle'] === true || $args['showvideotitle'] == 'true' || (int) $args['showvideotitle'] == 1 || $args['showvideotitle'] == 'on' ) ) ? true : false;
+
+    $showDescr    = ( isset( $args['showvideodescription'] ) && ( $args['showvideodescription'] === true || $args['showvideodescription'] == 'true' || (int) $args['showvideodescription'] == 1 || $args['showvideodescription'] == 'on' ) ) ? true : false;
     
     $exact        = ( isset( $args['exact'] ) && ( $args['exact'] === true || $args['exact'] == 'true' || (int) $args['exact'] == 1 || $args['exact'] == 'on' ) ) ? true : false;
 
@@ -232,6 +419,8 @@ class RelatedYouTubeVideos_API {
 
     $height       = isset( $args['height'] )      ? (int) abs( $args['height'] )            : 0; // The default height should be specified in the calling environment (widget or shortode)
     
+    $duration     = ( isset( $args['duration'] ) && preg_match( '#^(short|medium|long)$#i', trim( $args['duration']  ) ) ) ? trim( strtolower( $args['duration'] ) ) : '';
+
     $class        = isset( $args['class'] )       ? strip_tags( $args['class'] )   	        : '';
     
     $id           = isset( $args['class'] )       ? strip_tags( $args['id'] )               : '';
@@ -239,6 +428,16 @@ class RelatedYouTubeVideos_API {
     $relation     = isset( $args['relation'] )    ? strtolower( $args['relation'] )         : '';
 
     $wpSearch     = ( isset( $args['wpSearch'] ) && $args['wpSearch'] == true ) ? true      : false;  // Will only have an effect on the search results page
+    
+    $preview      = ( isset( $args['preview'] ) && ( $args['preview'] === true || $args['preview'] == 'true' || (int) $args['preview'] == 1 || $args['preview'] == 'on' ) ) ? true : false;
+    
+    $random       = ( isset( $args['random'] ) )    ? (int) abs( $args['random'] )            : $max;
+  
+    if( $random < $max ) {
+      
+      $random = $max;
+      
+    }
 
     if( $relation !== 'posttags' && $relation !== 'keywords' ) {
       
@@ -285,22 +484,29 @@ class RelatedYouTubeVideos_API {
       
     }
 
-    return array(
-      'title'       => $title,
-      'terms'       => $searchTerms,
-      'orderBy'     => $orderBy,
-      'start'       => $start,
-      'max'         => $max,
-      'apiVersion'  => $apiVersion,
-      'width'       => $width,
-      'height'      => $height,
-      'class'       => $class,
-      'id'          => $id,
-      'relation'    => $relation,
-      'search'      => $search,
-      'wpSearch'    => $wpSearch,
-      'exact'       => $exact
+    $norm = array(
+      'title'                 => $title,
+      'terms'                 => $searchTerms,
+      'orderBy'               => $orderBy,
+      'start'                 => $start,
+      'max'                   => $max,
+      'apiVersion'            => $apiVersion,
+      'width'                 => $width,
+      'height'                => $height,
+      'class'                 => $class,
+      'id'                    => $id,
+      'relation'              => $relation,
+      'search'                => $search,
+      'wpSearch'              => $wpSearch,
+      'exact'                 => $exact,
+      'random'                => $random,
+      'showvideotitle'        => $showTitle,
+      'showvideodescription'  => $showDescr,
+      'preview'               => $preview,
+      'duration'              => $duration
     );
+
+    return $norm;
 
   }
   

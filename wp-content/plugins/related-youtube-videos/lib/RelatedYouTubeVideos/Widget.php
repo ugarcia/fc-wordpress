@@ -67,7 +67,7 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
  	public function form( $instance ) {
 
     $data         = $this->API->validateConfiguration( $instance );
-    
+
     // Custom Defaults for Widgets
     if( $data['width'] == 0 ) {
       
@@ -92,6 +92,10 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
     $wpSearch     = ( $data['wpSearch'] == true ) ? ' checked="checked"' : '';
     
     $exact        = ( $data['exact'] == true ) ? ' checked="checked"' : '';
+    
+    $videoTitle   = ( $data['showvideotitle'] === true ) ? ' checked="checked"' : '';
+
+    $videoDescription   = ( $data['showvideodescription'] === true ) ? ' checked="checked"' : '';
 
     /**
      * Generating the HTML form for the widget options.
@@ -118,6 +122,20 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
     $html .= ' </ul>' . "\n";
     $html .= ' <input type="checkbox" name="' . $this->get_field_name( 'wpSearch' ) . '" ' . $wpSearch . ' /> <label> ' . __( 'Site Search (On Search Results Page)', $this->slug ) . "</label>\n";
     $html .= '</fieldset>' . "\n";
+
+
+    $html .= '<h3>' . __( 'Appearance', $this->slug ) . "</h3>\n";
+    $html .= "<ul>\n";
+
+    // Show video title
+    $html .= '  <li><input type="checkbox" name="' . $this->get_field_name( 'showvideotitle' ) . '" ' . $videoTitle . ' /> <label> ' . __( 'Display video title', $this->slug ) . "</label></li>\n";
+
+    // Show video Description
+    $html .= '  <li><input type="checkbox" name="' . $this->get_field_name( 'showvideodescription' ) . '" ' . $videoDescription . ' /> <label> ' . __( 'Display video description', $this->slug ) . "</label></li>\n";
+
+    $html .= "</ul>\n";
+
+
 
     $html .= '<h3>' . __( 'Advanced Settings', $this->slug ) . '</h3>' . "\n";
 
@@ -157,10 +175,28 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
     $html .= '  <input type="text" name="' . $this->get_field_name( 'height' ) . '" value="' . $data['height'] . '" />' . "\n";
     $html .= ' </li>' . "\n";
 
+    // HTML id attribute
+    $html .= ' <li>' . "\n";
+    $html .= '  <label for="' . $this->get_field_id( 'id' ) . '" style="display:inline-block;width:75px;text-align:right;">' . __( 'ID:', $this->slug ) . '</label>' . "\n";
+    $html .= '  <input type="text" name="' . $this->get_field_name( 'id' ) . '" value="' . $data['id'] . '" />' . "\n";
+    $html .= ' </li>' . "\n";
+
+    // HTML class attribute
+    $html .= ' <li>' . "\n";
+    $html .= '  <label for="' . $this->get_field_id( 'class' ) . '" style="display:inline-block;width:75px;text-align:right;">' . __( 'Class:', $this->slug ) . '</label>' . "\n";
+    $html .= '  <input type="text" name="' . $this->get_field_name( 'class' ) . '" value="' . $data['class'] . '" />' . "\n";
+    $html .= ' </li>' . "\n";
+
     // Offset - skip this number of videos/search results
     $html .= ' <li>' . "\n";
     $html .= '  <label for="' . $this->get_field_id( 'start' ) . '" style="display:inline-block;width:75px;text-align:right;">' . __( 'Offset:', $this->slug ) . '</label>' . "\n";
     $html .= '  <input type="text" name="' . $this->get_field_name( 'start' ) . '" value="' . $data['start'] . '"/>' . "\n";
+    $html .= ' </li>' . "\n";
+
+    // Random - Show a random video in terms of {number of videos} random videos out of {random}
+    $html .= ' <li>' . "\n";
+    $html .= '  <label for="' . $this->get_field_id( 'random' ) . '" style="display:inline-block;width:75px;text-align:right;">' . __( 'Random:', $this->slug ) . '</label>' . "\n";
+    $html .= '  <input type="text" name="' . $this->get_field_name( 'random' ) . '" value="' . $data['random'] . '"/>' . "\n";
     $html .= ' </li>' . "\n";
 
     // Number of videos / search results that will be returned (between 1 and 10)
@@ -200,7 +236,9 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
    */
 	public function update( $newInstance, $oldInstance ) {
 
-    return $this->API->validateConfiguration( $newInstance );
+    $norm = $this->API->validateConfiguration( $newInstance );
+
+    return $norm;
 
 	}
 
@@ -239,7 +277,7 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
     $wpSearch     = trim( get_search_query() );
 
     $searchTerms  = ( $data['wpSearch'] == true && $wpSearch !== '' ) ? $wpSearch : $data['search'];
-    
+
     $results      = $this->API->searchYouTube(
       array(
         'searchTerms' => $searchTerms,
@@ -247,7 +285,8 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
         'start'       => $data['start'],
         'max'         => $data['max'],
         'apiVersion'  => $data['apiVersion'],
-        'exact'       => $data['exact']
+        'exact'       => $data['exact'],
+        'random'      => $data['random']
       )
     );
     
@@ -267,9 +306,13 @@ class RelatedYouTubeVideos_Widget extends WP_Widget {
     $html .= $this->API->displayResults(
       $results,
       array(
-        'id'      => 'relatedVideos',
-        'width'   => $data['width'],
-        'height'  => $data['height']
+        'id'                    => 'relatedVideos',
+        'width'                 => $data['width'],
+        'height'                => $data['height'],
+        'class'                 => $data['class'],
+        'id'                    => $data['id'],
+        'showvideotitle'        => $data['showvideotitle'],
+        'showvideodescription'  => $data['showvideodescription']
       )
     );
 

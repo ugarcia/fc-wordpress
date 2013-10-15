@@ -36,7 +36,7 @@ function makeDoubleDelegate(function1, function2) {
 }
 
 function mantra_onload() {
-    
+
 <?php if ($mantra_mobile=="Enable") { // If mobile view is enabled ?>
 
      // Add responsive videos
@@ -54,8 +54,8 @@ jQuery(document).ready(function(){
 <?php if ($mantra_mobile=="Enable") { // If mobile view is enabled ?>
 
 	// Add select navigation to small screens
-     jQuery("#access .menu ul:first-child").tinyNav({
-          	header: false // Show header instead of the active item
+     jQuery("#access > .menu > ul").tinyNav({
+          	header: ' = <?php _e('Menu','mantra'); ?> = '
 			});
 <?php } ?>
 });
@@ -72,65 +72,56 @@ add_action('wp_head','mantra_header_scripts',100);
  * Adds title and description to heaer
  * Used in header.php
 */
- function mantra_title_and_description() {
-  $mantra_options= mantra_get_theme_options();
-foreach ($mantra_options as $key => $value) {
-     ${"$key"} = $value ;
-}
-// Header styling and image loading
-// Check if this is a post or page, if it has a thumbnail, and if it's a big one
-global $post;
+function mantra_title_and_description() {
+	$mantra_options = mantra_get_theme_options();
+	foreach ($mantra_options as $key => $value) { ${"$key"} = $value; }
+	
+	// Header styling and image loading
+	// Check if this is a post or page, if it has a thumbnail, and if it's a big one
+	
+	global $post;
 
-	if (get_header_image() != '') { $himgsrc=get_header_image(); }
-	if ( is_singular() && has_post_thumbnail( $post->ID ) && $mantra_fheader == "Enable" &&
-		( $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ) ) &&
-		$image[1] >= HEADER_IMAGE_WIDTH ) : $himgsrc= $image[0];
+	if (get_header_image() != '') { $himgsrc = get_header_image(); }
+	if ( is_singular() && has_post_thumbnail( $post->ID ) && ($mantra_fheader == "Enable") && ($image = wp_get_attachment_image_src(get_post_thumbnail_id( $post->ID ), 'header' ) ) && ($image[1] >= HEADER_IMAGE_WIDTH) ):
+		$himgsrc = $image[0];
 	endif;
- 
- 
- if (isset($himgsrc) && ($himgsrc != '')) : echo '<img id="bg_image" alt="" title="" src="'.$himgsrc.'"  />';  endif;
+
+	if (isset($himgsrc) && ($himgsrc != '')) : echo '<img id="bg_image" alt="" title="" src="'.$himgsrc.'"  />';  endif;
 
 ?>
 
- <div id="header-container">
+	<div id="header-container">
 
- 
- <?php
- $mantra_options= mantra_get_theme_options();
-foreach ($mantra_options as $key => $value) {
-     ${"$key"} = $value ;
-}
- 
- switch ($mantra_siteheader) {
- 
-	case 'Site Title and Description':
-		echo '<div>';
-		$heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div';
-		echo '<'.$heading_tag.' id="site-title">';
-		echo '<span> <a href="'.esc_url( home_url( '/' ) ).'" title="'.esc_attr( get_bloginfo( 'name', 'display' ) ).'" rel="home">'.get_bloginfo( 'name' ).'</a> </span>';
-		echo '</'.$heading_tag.'>';
-		echo '<div id="site-description" >'.get_bloginfo( 'description' ).'</div></div>'; 
-	break;
+
+<?php
+	switch ($mantra_siteheader) {
+
+		case 'Site Title and Description':
+			echo '<div>';
+			$heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div';
+			echo '<'.$heading_tag.' id="site-title">';
+			echo '<span> <a href="'.esc_url( home_url( '/' ) ).'" title="'.esc_attr( get_bloginfo( 'name', 'display' ) ).'" rel="home">'.get_bloginfo( 'name' ).'</a> </span>';
+			echo '</'.$heading_tag.'>';
+			echo '<div id="site-description" >'.get_bloginfo( 'description' ).'</div></div>';
+		break;
+
+		case 'Clickable header image' :
+			echo '<a href="'.esc_url( home_url( '/' ) ).'" id="linky"></a>' ;
+		break;
+
+		case 'Custom Logo' :
+			if (isset($mantra_logoupload) && ($mantra_logoupload != '')) : echo '<div><a id="logo" href="'.esc_url( home_url( '/' ) ).'" ><img title="" alt="" src="'.$mantra_logoupload.'" /></a></div>'; endif;
+		break;
+
+		case 'Empty' :
+			// nothing to do here
+		break;
+	}
+
+	if ($mantra_socialsdisplay0): mantra_header_socials(); endif;
+	echo '</div>';
 	
-	case 'Clickable header image' :
-	
-		echo '<a href="'.esc_url( home_url( '/' ) ).'" id="linky"></a>' ;
-	break;
-	
-	case 'Custom Logo' :
-	if (isset($mantra_logoupload) && ($mantra_logoupload != '')) : echo '<div><a id="logo" href="/" ><img title="" alt="" src="'.$mantra_logoupload.'" /></a></div>'; endif;
-	
-	break;
-	
-	case 'Empty' :
-	
-	break;
-	
-}
-  
-  if($mantra_socialsdisplay0) mantra_header_socials();
-  echo '</div>';
-}
+} // mantra_title_and_description()
 
 
 add_action ('cryout_branding_hook','mantra_title_and_description');
@@ -174,13 +165,13 @@ function mantra_set_social_icons($id) {
 	echo '<div class="socials" id="'.$id.'">';
 	for ($i=1; $i<=9; $i+=2) {
 		$j=$i+1;
-		if ( ${"mantra_social$j"} ) {	
+		if ( ${"mantra_social$j"} ) {
 			if (in_array(${"mantra_social$i"},$cryout_special_keys)) :
 				$cryout_current_social = esc_html( ${"mantra_social$j"} );
-			else : 
+			else :
 				$cryout_current_social = esc_url( ${"mantra_social$j"} );
 			endif;	?>
-			
+
 			<a target="_blank" rel="nofollow" href="<?php echo $cryout_current_social; ?>" class="socialicons social-<?php echo esc_attr(${"mantra_social$i"}); ?>" title="<?php echo esc_attr(${"mantra_social$i"}); ?>"><img alt="<?php echo esc_attr(${"mantra_social$i"}); ?>" src="<?php echo get_template_directory_uri().'/images/socials/'.${"mantra_social$i"}.'.png'; ?>" /></a><?php
 		}
 	}
@@ -235,9 +226,7 @@ if ($mantra_backtop=="Enable") add_action ('cryout_body_hook','mantra_back_top')
  */
 function mantra_breadcrumbs() {
 $mantra_options= mantra_get_theme_options();
-foreach ($mantra_options as $key => $value) {
-     ${"$key"} = $value ;
-}
+foreach ($mantra_options as $key => $value) { ${"$key"} = $value; }
 global $post;
 echo '<div class="breadcrumbs">';
 if (is_page() && !is_front_page() || is_single() || is_category() || is_archive()) {
@@ -283,8 +272,7 @@ if (is_page() && !is_front_page() || is_single() || is_category() || is_archive(
 echo '</div>';
 }
 
-
-if($mantra_breadcrumbs=="Enable")  add_action ('cryout_breadcrumbs_hook','mantra_breadcrumbs');
+if($mantra_breadcrumbs=="Enable")  add_action ('cryout_before_content_hook','mantra_breadcrumbs',0);
 
 
 if ( ! function_exists( 'mantra_pagination' ) ) :
@@ -339,10 +327,10 @@ $mantra_options= mantra_get_theme_options();
 foreach ($mantra_options as $key => $value) {
      ${"$key"} = $value ;
 }	?>
-	<div id="site-info" >
+	<div style="text-align:center;clear:both;padding-top:4px;" >
 		<a href="<?php echo esc_url( home_url( '/' ) ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-			<?php bloginfo( 'name' ); ?></a> | <?php _e('Powered by','mantra')?> <a href="<?php echo 'http://www.cryoutcreations.eu';?>" title="<?php echo 'Mantra Theme by '.
-			'Cryout Creations';?>"><?php echo 'Mantra' ?></a> &amp; <a href="<?php echo esc_url('http://wordpress.org/' ); ?>"
+			<?php bloginfo( 'name' ); ?></a> | <?php _e('Powered by','mantra')?> <a target="_blank" href="<?php echo 'http://www.cryoutcreations.eu';?>" title="<?php echo 'Mantra Theme by '.
+			'Cryout Creations';?>"><?php echo 'Mantra' ?></a> &amp; <a target="_blank" href="<?php echo esc_url('http://wordpress.org/' ); ?>"
 			title="<?php esc_attr_e('Semantic Personal Publishing Platform', 'mantra'); ?>"> <?php printf(' %s.', 'WordPress' ); ?>
 		</a>
 	</div><!-- #site-info -->
@@ -367,6 +355,43 @@ if ($mantra_copyright != '') add_action('cryout_footer_hook','mantra_copyright',
 
 add_action('wp_ajax_nopriv_do_ajax', 'mantra_ajax_function');
 add_action('wp_ajax_do_ajax', 'mantra_ajax_function');
+
+
+/** 
+* Retrieves the IDs for images in a gallery. 
+* @since mantra 2.1.1
+* @return array List of image IDs from the post gallery. 
+*/ 
+function mantra_get_gallery_images() { 
+       $images = array(); 
+
+       if ( function_exists( 'get_post_galleries' ) ) { 
+               $galleries = get_post_galleries( get_the_ID(), false ); 
+               if ( isset( $galleries[0]['ids'] ) ) 
+                       $images = explode( ',', $galleries[0]['ids'] ); 
+       } else { 
+               $pattern = get_shortcode_regex(); 
+               preg_match( "/$pattern/s", get_the_content(), $match ); 
+               $atts = shortcode_parse_atts( $match[3] ); 
+               if ( isset( $atts['ids'] ) ) 
+                       $images = explode( ',', $atts['ids'] ); 
+       } 
+
+       if ( ! $images ) { 
+               $images = get_posts( array( 
+                       'fields'         => 'ids', 
+                       'numberposts'    => 999, 
+                       'order'          => 'ASC', 
+                       'orderby'        => 'menu_order', 
+                       'post_mime_type' => 'image', 
+                       'post_parent'    => get_the_ID(), 
+                       'post_type'      => 'attachment', 
+               ) ); 
+       } 
+
+       return $images; 
+} // mantra_get_gallery_images()
+
 
 if ( ! function_exists( 'mantra_ajax_function' ) ) :
 
@@ -403,18 +428,18 @@ endif;
 
 if ( ! function_exists( 'mantra_ajax_get_latest_posts' ) ) :
 function mantra_ajax_get_latest_posts($count,$categName){
- $testVar='';
-// The Query
-query_posts( 'category_name='.$categName);
-// The Loop
-if ( have_posts() ) : while ( have_posts() ) : the_post();
-$testVar .=the_title("<option>","</option>",0);
-endwhile; else: endif;
+	$testVar='';
+	// The Query
+	query_posts( 'category_name='.$categName);
+	// The Loop
+	if ( have_posts() ) : while ( have_posts() ) : the_post();
+		$testVar .=the_title("<option>","</option>",0);
+	endwhile; else: endif;
 
-// Reset Query
-wp_reset_query();
-
-return $testVar;
+	// Reset Query
+	wp_reset_query();
+	
+	return $testVar;
 }
 endif;
 ?>

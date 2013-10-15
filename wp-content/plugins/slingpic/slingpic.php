@@ -3,7 +3,7 @@
 Plugin Name: Slingpic
 Plugin URI: http://slingpic.com/
 Description: Make it easy to share images from your website through a widget. Image sharing tool, Slingpic, makes it easy for visitors to your website to share images across social networks, email and blogging platforms. A visitor simply needs to roll over an image on your site and they can quickly share an image in two clicks. Benefit from incremental traffic from shared images and links back to your website from popular social networks like Pinterest, Facebook, Twitter, Email and blogging platforms.
-Version: 4.0.0
+Version: 5.0.1
 Author: Ben Jackson
 Author URI: http://slingpic.com
 License: GPL2
@@ -239,7 +239,7 @@ class Slingpic_Options {
 				$i = 0;
 				foreach ( $choices as $value => $label ) {
 					if($id == 'themes'){
-						echo '<input class="radio' . $field_class . '" type="radio" name="slingpic_options[' . $id . ']" id="' . $id . $i . '" value="' . esc_attr( $value ) . '" ' . checked( $options[$id], $value, false ) . '> <label style="display: inline-block; border-bottom: 1px solid gray; margin-bottom: 15px;" for="' . $id . $i . '"><img src="/wp-content/plugins/slingpic/img/'.$value.'.jpg" /></label>';
+						echo '<input class="radio' . $field_class . '" type="radio" name="slingpic_options[' . $id . ']" id="' . $id . $i . '" value="' . esc_attr( $value ) . '" ' . checked( $options[$id], $value, false ) . '> <label style="display: inline-block; border-bottom: 1px solid gray; margin-bottom: 15px;" for="' . $id . $i . '"><img src="'.plugins_url( 'img/'.$value.'.jpg', __FILE__ ).'" /></label>';
 					}else{
 						echo '<input class="radio' . $field_class . '" type="radio" name="slingpic_options[' . $id . ']" id="' . $id . $i . '" value="' . esc_attr( $value ) . '" ' . checked( $options[$id], $value, false ) . '> <label for="' . $id . $i . '">' . $label . '</label>';
 					}
@@ -669,7 +669,7 @@ class Slingpic_Options {
 		$shareDefault = $shareOptions['share_sites_default'];
 		$shareBox = $shareOptions['share_sites_box']; ?>
 		
-		<script src="http://cdn.slingpic.com/js/slingpic.plugin.js?v=4"></script>
+		<script src="http://cdn.slingpic.com/js/slingpic.plugin.js?v=5"></script>
 		<script>
 
 			jQuery(window).load(function(){

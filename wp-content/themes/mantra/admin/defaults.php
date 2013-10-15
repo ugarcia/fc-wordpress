@@ -17,6 +17,9 @@ $mantra_defaults = array(
 
 
 "mantra_frontpage" => "Disable",
+"mantra_frontposts" => "Disable",
+"mantra_frontpostscount" => 5,
+"mantra_menualign" => "left",
 "mantra_fpsliderwidth" => "800",
 "mantra_fpsliderheight" => "250",
 "mantra_fpslideranim" => "random",
@@ -89,6 +92,7 @@ $mantra_defaults = array(
 
 "mantra_hheight" => "75",
 "mantra_hcenter" => "",
+"mantra_hratio" => "",
 "mantra_menurounded" => "Enable",
 "mantra_logoupload" => "",
 "mantra_favicon" => "", 
@@ -112,6 +116,7 @@ $mantra_defaults = array(
 "mantra_googlefontsubheader" => '',
 "mantra_googlefontsubheader2" => '',
 "mantra_textalign" => "Default",
+"mantra_parmargin" => "1.5em",
 "mantra_parindent" => "0px",
 "mantra_headerindent" => "Disable",
 "mantra_lineheight" => "Default",

@@ -23,7 +23,7 @@ if (frontier_can_add() )
 
 if( $user_posts->found_posts > 0 )
 	{
-
+	
 	$tmp_status_list = get_post_statuses( );
 
 ?>
@@ -48,7 +48,17 @@ if( $user_posts->found_posts > 0 )
 	?>
 			<tr>
 				<td><?php echo mysql2date('Y-m-d', $post->post_date); ?></td>
-				<td><a href="<?php echo post_permalink($post->ID);?>"><?php echo $post->post_title;?></a></td>
+				<td>
+				<?php if ($post->post_status == "publish")
+						{ ?>
+						<a href="<?php echo post_permalink($post->ID);?>"><?php echo $post->post_title;?></a>
+				<?php	} 
+					else
+						{
+						echo $post->post_title;
+						} ?>
+						
+				</td>
 				<td><?php  echo isset($tmp_status_list[$post->post_status]) ? $tmp_status_list[$post->post_status] : $post->post_status;   ;?></td>
 				<td><?php  
 					// List categories
@@ -68,16 +78,26 @@ if( $user_posts->found_posts > 0 )
 						if (frontier_can_edit($post->post_date, $post->comment_count) == true)
 							{
 								?>
-									<a href="<?php echo $frontier_permalink; ?><?php echo $concat;?>task=edit&postid=<?php echo $post->ID;?>">Edit</a>&nbsp;&nbsp;
+									<a href="<?php echo $frontier_permalink; ?><?php echo $concat;?>task=edit&postid=<?php echo $post->ID;?>"><?php _e("Edit", "frontier-post") ?></a>&nbsp;&nbsp;
 								<?php
 							}
 												
 						if (frontier_can_delete($post->post_date, $post->comment_count) == true)
 							{
 								?>
-									<a href="#" onclick="if(confirm('<?php _e('Are you sure you want to delete this post?', 'frontier-post')?>')){location.href='<?php echo $frontier_permalink;?><?php echo $concat;?>task=delete&postid=<?php echo $post->ID;?>'}" >Delete</a>
+									<a href="#" onclick="if(confirm('<?php _e('Are you sure you want to delete this post?', 'frontier-post')?>')){location.href='<?php echo $frontier_permalink;?><?php echo $concat;?>task=delete&postid=<?php echo $post->ID;?>'}" ><?php _e("Delete", "frontier-post") ?></a>
 								<?php
 							}
+						
+						if ($post->post_status != "publish")
+							{ 
+							$tmp_post_link = site_url();
+							$tmp_post_link = $tmp_post_link."/?p=".$post->ID."&preview=true"
+							?>
+							<a href="<?php echo $tmp_post_link;?>" target="_blank"><?php _e("Preview","frontier-post") ?></a>
+							<?php		
+							} 
+
 					?>
 					&nbsp;
 				</td>
@@ -104,11 +124,17 @@ if( $user_posts->found_posts > 0 )
 		{
 			echo $pagination;
 		}
+	echo "</br>".__("Number of posts already created by you: ", "frontier-post").$user_posts->post_count."</br>";
 	}
+	
 else
 	{
 		echo "</br><center>";
 		_e('Sorry, you do not have any posts (yet)', 'frontier-post');
 		echo "</center><br></br>";
 	} // end post count
+	
+//Re-instate $post for the page
+wp_reset_postdata();
+
 ?>

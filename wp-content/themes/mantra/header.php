@@ -38,7 +38,7 @@
 
 			</div><!-- #branding -->
 
-			<nav id="access" role="navigation">
+			<nav id="access" class="jssafe" role="navigation">
 
 				<?php cryout_access_hook();?>
 
@@ -54,6 +54,6 @@
 		<?php cryout_forbottom_hook(); ?>
 
 		<div style="clear:both;"> </div>
-
+		
 		<?php cryout_breadcrumbs_hook();?>
 							
